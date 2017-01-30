@@ -80,7 +80,7 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
     function keypressListener(e) {
       if (e.which === 27) {
         var last = openedTooltips.top();
-        if (last) {
+        if (last && !last.key.noneTrigger) {
           last.value.close();
           last = null;
         }
@@ -540,7 +540,7 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
                 triggers = getTriggers(val);
               }
 
-              if (triggers.show !== 'none') {
+              if (triggers.show.indexOf('none') === -1) {
                 triggers.show.forEach(function(trigger, idx) {
                   if (trigger === 'outsideClick') {
                     element.on('click', toggleTooltipBind);
@@ -553,6 +553,8 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
                   }
                   element.on('keypress', hideOnEscapeKey);
                 });
+              } else {
+                  ttScope.noneTrigger = true;
               }
             }
 
